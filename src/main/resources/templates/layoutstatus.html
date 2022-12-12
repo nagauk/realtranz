@@ -243,7 +243,7 @@ body {
         <div th:if="@{${plot.pltStatus}} == 'AVAILABLE'">
             <div class='overlay myTooltip btn1 btn-effect btn-purple' align='center' data-toggle="tooltip"
                  data-html="true"
-                 th:title="'<td align=left>Plot No:     '+@{${plot.plotId}}+'   <br/>Plot Size:   '+@{${plot.plotSize}}+' sq.yrd  <br/>Plot Facing: '+@{${plot.facing}}+'  Face <br/>Plot Status:   '+@{${plot.pltStatus}}+' <br/>Owner: '+@{${plot.owner}}+'        <td>'"
+                 th:title="'<td align=left>Plot No:     '+@{${plot.plotId}}+'   <br/>Plot Size:   '+@{${plot.plotSize}}+' sq.yrd  <br/>Plot Facing: '+@{${plot.facing}}+'  Face <br/>Plot Status:   '+@{${plot.pltStatus}}+' <br/> '+@{${plot.owner}}+'        <td>'"
                  th:style="'background:limegreen; height:12px;width:30px; border: 5; position: absolute; top:'+@{${plot.top}}+'px; left: '+@{${plot.leftPos}}+'px; font-size: 9px;'">
                 <span style="color:white" th:text="${plot.plotId}" />
             </div>
@@ -252,7 +252,7 @@ body {
         <div th:if="@{${plot.pltStatus}} == 'BLOCKED'">
             <div class='overlay myTooltip btn1 btn-effect btn-purple' align='center' data-toggle="tooltip"
                  data-html="true"
-                 th:title="'<td align=left>Plot No:     '+@{${plot.plotId}}+'   <br/>Plot Size:   '+@{${plot.plotSize}}+' sq.yrd  <br/>Plot Facing: '+@{${plot.facing}}+'  Face <br/>Plot Status:   '+@{${plot.pltStatus}}+' <br/>Owner: '+@{${plot.owner}}+'        <td>'"
+                 th:title="'<td align=left>Plot No:     '+@{${plot.plotId}}+'   <br/>Plot Size:   '+@{${plot.plotSize}}+' sq.yrd  <br/>Plot Facing: '+@{${plot.facing}}+'  Face <br/>Plot Status:   '+@{${plot.pltStatus}}+' <br/> '+@{${plot.owner}}+'        <td>'"
                  th:style="'background:orchid; height:12px;width:30px; border: 5; position: absolute; top:'+@{${plot.top}}+'px; left: '+@{${plot.leftPos}}+'px; font-size: 9px;'">
                 <span style="color:white" th:text="${plot.plotId}" />
             </div>
@@ -261,7 +261,7 @@ body {
         <div th:if="@{${plot.pltStatus}} == 'BOOKED'">
             <div class='overlay myTooltip btn1 btn-effect btn-purple' align='center' data-toggle="tooltip"
                  data-html="true"
-                 th:title="'<td align=left>Plot No:     '+@{${plot.plotId}}+'   <br/>Plot Size:   '+@{${plot.plotSize}}+' sq.yrd  <br/>Plot Facing: '+@{${plot.facing}}+'  Face <br/>Plot Status:   '+@{${plot.pltStatus}}+' <br/>Owner: '+@{${plot.owner}}+'        <td>'"
+                 th:title="'<td align=left>Plot No:     '+@{${plot.plotId}}+'   <br/>Plot Size:   '+@{${plot.plotSize}}+' sq.yrd  <br/>Plot Facing: '+@{${plot.facing}}+'  Face <br/>Plot Status:   '+@{${plot.pltStatus}}+' <br/> '+@{${plot.owner}}+'        <td>'"
                  th:style="'background:blue; height:12px;width:30px; border: 5; position: absolute; top:'+@{${plot.top}}+'px; left: '+@{${plot.leftPos}}+'px; font-size: 9px;'">
                 <span style="color:white" th:text="${plot.plotId}" />
             </div>
@@ -279,7 +279,7 @@ body {
         <div th:if="@{${plot.pltStatus}} == 'SOLD'">
             <div class='overlay myTooltip btn1 btn-effect btn-purple' align='center' data-toggle="tooltip"
                  data-html="true"
-                 th:title="'<td align=left>Plot No:     '+@{${plot.plotId}}+'   <br/>Plot Size:   '+@{${plot.plotSize}}+' sq.yrd  <br/>Plot Facing: '+@{${plot.facing}}+'  Face <br/>Plot Status:   '+@{${plot.pltStatus}}+' <br/>Owner: '+@{${plot.owner}}+'       <td>'"
+                 th:title="'<td align=left>Plot No:     '+@{${plot.plotId}}+'   <br/>Plot Size:   '+@{${plot.plotSize}}+' sq.yrd  <br/>Plot Facing: '+@{${plot.facing}}+'  Face <br/>Plot Status:   '+@{${plot.pltStatus}}+' <br/>'+@{${plot.owner}}+'       <td>'"
                  th:style="'background:orangered; height:12px;width:30px; border: 5; position: absolute; top:'+@{${plot.top}}+'px; left: '+@{${plot.leftPos}}+'px; font-size: 9px;'">
                 <span style="color:white" th:text="${plot.plotId}" />
             </div>
