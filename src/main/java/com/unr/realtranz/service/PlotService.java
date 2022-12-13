@@ -69,4 +69,11 @@ public class PlotService {
         plotRepository.save(plot);
     }
 
+    public void updatePlotA1(){
+       Plot plot = plotRepository.findByVentureAndId("udyana",(long)1);
+       plot.setPlotId("A1");
+       plotRepository.save(plot);
+    }
+
+
 }

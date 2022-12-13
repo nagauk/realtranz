@@ -39,6 +39,12 @@ public class PlotController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/update1234",method = RequestMethod.PUT)
+    public String updatePlot(){
+        plotService.updatePlotA1();
+        return "UpdateA1";
+    }
+
     @RequestMapping(value="/plots/{venture}",method = RequestMethod.GET)
     public List<Plot> getAllVenturePlots(@PathVariable("venture") String venture){
         return plotService.getAllPlotsByVenture(venture);
