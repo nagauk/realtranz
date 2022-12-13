@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -58,14 +59,13 @@ public class PlotController {
     }
 
     @RequestMapping(value="/{venture}",method = RequestMethod.POST)
-    public ModelAndView updatePlots(@PathVariable("venture") String venture, @ModelAttribute Plot model){
+    public RedirectView updatePlots(@PathVariable("venture") String venture, @ModelAttribute Plot model){
         Plot plot = plotService.getPlotsByVentureAndId(venture,model.getId());
         plot.setOwner(model.getOwner());
         plot.setPltStatus(model.getPltStatus());
         plotService.updatePlot(plot);
-        ModelMap modelMap = new ModelMap("plots",plotService.getAllPlotsByVenture(venture));
-        ModelAndView modelAndView = new ModelAndView("layoutstatus",modelMap);
-        return modelAndView;
+        RedirectView redirectView = new RedirectView("/plotstatus/"+plot.getVenture());
+        return redirectView;
     }
 /*
     @RequestMapping(value="/plot/{venture}",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,

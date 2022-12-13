@@ -30,7 +30,7 @@ public class PlotService {
         List<Plot>  plotList = new ArrayList<>();
         try {
 //parsing a CSV file into BufferedReader class constructor
-            BufferedReader br = new BufferedReader(new FileReader("asasdW:\\aptshome\\docs\\udyana.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("wrweW:\\aptshome\\docs\\udyana.csv"));
 
             while ((line = br.readLine()) != null)
             {
