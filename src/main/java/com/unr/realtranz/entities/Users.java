@@ -1,5 +1,8 @@
 package com.unr.realtranz.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,19 +15,20 @@ import java.util.List;
 @Table
 public class Users  extends Audiatable{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "userSeqGen", sequenceName = "userSeq", initialValue = 1, allocationSize = 10000000)
+    @GeneratedValue(generator = "userSeqGen")
     private Long id;
-    @Column
+    @Column(nullable = false)
     private String firstName;
     @Column
     private String lastName;
-    @Column
+    @Column(nullable = false)
     private String email_id;
-    @Column
+    @Column(unique = true, nullable = false)
     private String username;
-    @Column
+    @Column(nullable = false)
     private String password;
-    @Column
+    @Column(nullable = false)
     private String phone1;
     @Column
     private String phone2;
@@ -38,6 +42,27 @@ public class Users  extends Audiatable{
 
     @Column
     private boolean enabled;
+
+    @Column
+    private String nationality;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Venture> ventureList;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Organization> organizationList;
+
+
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
 
     public boolean isEnabled() {
         return enabled;
@@ -54,12 +79,6 @@ public class Users  extends Audiatable{
     public void setRole(String role) {
         this.role = role;
     }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Venture> ventureList;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Organization> organizationList;
 
     public List<Organization> getOrganizationList() {
         return organizationList;

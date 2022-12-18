@@ -1,8 +1,11 @@
 package com.unr.realtranz.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.unr.realtranz.models.PlotStatus;
 
 import javax.persistence.*;
+import java.util.List;
 
 /***
  **@Author:Nagaraju Ukkalam
@@ -17,34 +20,42 @@ public class Plot extends Audiatable{
     @GeneratedValue(generator = "plotSeqGen")
     private Long id;
 
-   @Column
-    private String venture;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "venture_plot", joinColumns = @JoinColumn(name = "venture_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "plot_id", referencedColumnName = "id"))
+    private Venture venture;
 
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "plot", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Enquiry> enquiries;
+
+    //this column is for to identify booked plot user
     @Column
     private String owner;
 
-    @Column
+    @Column( nullable = false)
     private String plotId;
-    @Column
+    @Column(nullable = false)
     private int plotSize;
     @Column
     private String width;
     @Column
     private String length;
 
-    @Column
+    @Column(nullable = false)
     private String top;
 
-    @Column
+    @Column(nullable = false)
     private String leftPos;
 
-    @Column
+    @Column(nullable = false)
     private String facing;
     @Column
     private int price;
     @Column
     private boolean includeGovtCharges;
-    @Column
+    @Column(nullable = false)
     private PlotStatus pltStatus;
 
     @Column
@@ -131,12 +142,20 @@ public class Plot extends Audiatable{
         this.pltStatus = pltStatus;
     }
 
-    public String getVenture() {
+    public Venture getVenture() {
         return venture;
     }
 
-    public void setVenture(String venture) {
+    public void setVenture(Venture venture) {
         this.venture = venture;
+    }
+
+    public List<Enquiry> getEnquiries() {
+        return enquiries;
+    }
+
+    public void setEnquiries(List<Enquiry> enquiries) {
+        this.enquiries = enquiries;
     }
 
     public String getLength() {

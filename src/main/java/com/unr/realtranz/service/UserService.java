@@ -20,9 +20,13 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public List<UserModel> getUsers(){
+    public List<Users> getUsers(){
         List<Users> users = userRepository.findAll();
-        return convertUserModels(users);
+        return users;
+    }
+    public Users getUsersByUserName(String userName){
+        Users users = userRepository.findByUsername(userName);
+        return users;
     }
     private List<UserModel> convertUserModels(List<Users> users) {
         List<UserModel> userModels = new ArrayList<>();

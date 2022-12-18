@@ -1,5 +1,8 @@
 package com.unr.realtranz.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,10 +15,11 @@ import java.util.List;
 @Table
 public class Organization  extends Audiatable{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "orgSeqGen", sequenceName = "orgSeq", initialValue = 1, allocationSize = 10000000)
+    @GeneratedValue(generator = "orgSeqGen")
     private Long id;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String name;
 
     @Column
@@ -24,16 +28,31 @@ public class Organization  extends Audiatable{
     @Column
     private String orgStatus;
 
-    @Column
-    private String userid;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "organization", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Venture> ventureList;
 
-    public String getUserid() {
-        return userid;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "users_org", joinColumns = @JoinColumn(name = "org_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @JsonIgnore
+    private Users user;
+    public List<Venture> getVentureList() {
+        return ventureList;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setVentureList(List<Venture> ventureList) {
+        this.ventureList = ventureList;
     }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

@@ -237,8 +237,8 @@ body {
 
 </ul>
 
-<div style="position: relative; background: url('/img/udyana.jpg') no-repeat; width: 1900px; height:1300px; background-size: 1800px; ">
-    <tr th:each="plot: ${plots}">
+<div th:style="'position: relative; background: url(/img/'+${venture.ventureName}+'.jpg) no-repeat; width: 1900px; height:1300px; background-size: 1800px; '">
+    <tr th:each="plot: ${venture.plotList}">
 
         <div th:if="@{${plot.pltStatus}} == 'AVAILABLE'">
             <div class='overlay myTooltip btn1 btn-effect btn-purple' align='center' data-toggle="tooltip"

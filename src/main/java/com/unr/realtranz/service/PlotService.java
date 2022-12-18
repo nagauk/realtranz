@@ -1,6 +1,7 @@
 package com.unr.realtranz.service;
 
 import com.unr.realtranz.entities.Plot;
+import com.unr.realtranz.entities.Venture;
 import com.unr.realtranz.models.PlotStatus;
 import com.unr.realtranz.repository.PlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,25 +24,37 @@ public class PlotService {
     @Autowired
     PlotRepository plotRepository;
 
-    public int savePlotsDetails(String venture){
-
+    @Autowired
+    VentureService ventureService;
+    public int savePlotsDetails(Venture venture){
         String line = "";
         String splitBy = ",";
         List<Plot>  plotList = new ArrayList<>();
         try {
 //parsing a CSV file into BufferedReader class constructor
-            BufferedReader br = new BufferedReader(new FileReader("wrweW:\\aptshome\\docs\\udyana.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("W:/aptshome/railwaydeployed_bkp/plotdata.csv"));
 
             while ((line = br.readLine()) != null)
             {
                 String[] plots = line.split(splitBy);
                 Plot plot = new Plot();
-                plot.setPlotId(plots[0]);
+                plot.setPlotId(plots[5]);
                 plot.setLeftPos(plots[2]);
-                plot.setTop(plots[1]);
-                plot.setFacing(plots[3]);
-                plot.setPlotSize(Integer.parseInt(plots[4]));
-                plot.setPltStatus(PlotStatus.AVAILABLE);
+                plot.setTop(plots[10]);
+                plot.setFacing(plots[0]);
+                if(!"NULL".equals(plots[4])){plot.setOwner(plots[4]);}
+                plot.setPlotSize(Integer.parseInt(plots[7]));
+                if("0".equals(plots[8])){
+                    plot.setPltStatus(PlotStatus.AVAILABLE);
+                }else if("2".equals(plots[8])){
+                    plot.setPltStatus(PlotStatus.BLOCKED);
+                }else if("3".equals(plots[8])){
+                    plot.setPltStatus(PlotStatus.BOOKED);
+                }else if("5".equals(plots[8])){
+                    plot.setPltStatus(PlotStatus.SOLD);
+                }
+
+
                 plot.setIncludeGovtCharges(Boolean.TRUE);
                 plot.setVenture(venture);
                 plotList.add(plot);
@@ -54,25 +67,23 @@ public class PlotService {
     }
 
     public List<Plot> getAllPlotsByVenture(String venture){
-        return plotRepository.findByVenture(venture);
+        return plotRepository.findByVenture(ventureService.getVentureByName(venture));
     }
 
     public Plot getPlotsByVentureAndPlotId(String venture, String plotId){
-        return plotRepository.findByVentureAndPlotId(venture,plotId);
+        return plotRepository.findByVentureAndPlotId(ventureService.getVentureByName(venture),plotId);
     }
 
-    public Plot getPlotsByVentureAndId(String venture, Long id){
+    public Plot getPlotId(long id){
+        return plotRepository.findById(id);
+    }
+
+    public Plot getPlotsByVentureAndId(Venture venture, Long id){
         return plotRepository.findByVentureAndId(venture,id);
     }
 
     public void updatePlot(Plot plot){
         plotRepository.save(plot);
-    }
-
-    public void updatePlotA1(){
-       Plot plot = plotRepository.findByVentureAndId("udyana",(long)1);
-       plot.setPlotId("A1");
-       plotRepository.save(plot);
     }
 
 

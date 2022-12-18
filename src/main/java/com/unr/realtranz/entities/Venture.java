@@ -1,5 +1,8 @@
 package com.unr.realtranz.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.unr.realtranz.model.VentureType;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -16,60 +19,107 @@ import java.util.List;
 @Table
 public class Venture {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "ventureSeqGen", sequenceName = "ventureSeq", initialValue = 1, allocationSize = 10000000)
+    @GeneratedValue(generator = "ventureSeqGen")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "venture_owner_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "users_venture", joinColumns = @JoinColumn(name = "venture_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Users owner;
 
-    @Column
-    private String organization;
-    @Column
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "venture", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Plot> plotList;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "org_venture", joinColumns = @JoinColumn(name = "org_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "venture_id", referencedColumnName = "id"))
+    private Organization organization;
+
+    @Column(unique = true, nullable = false)
     private String ventureName;
     @Column
     private String ventureAddress;
+
+    @Lob
     @Column
     private String mapLocation;
-    @Column
+    @Column(nullable = false)
     private String VentureStatus;
+    @Column(nullable = false)
+    private int actualPrice;
+    @Column(nullable = false)
+    private int offerPrice;
+
     @Column
-    private int minPrice;
-    @Column
-    private int maxPrice;
-    @Column
-    private int minSqyds;
-    @Column
-    private int maxSqyds;
-    @Column
+    private String message;
+
+    @Column(nullable = false)
     private String locality;
+
+    @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false)
+    private String state;
+
+    @Column
+    private String description;
+
     @Lob
-    @Column
-    @Type(type = "org.hibernate.type.BinaryType")
-    private List<Blob> devlopementPhotos;
-    @Lob
-    @Column
-    @Type(type = "org.hibernate.type.BinaryType")
-    private List<Blob> permissionDocs;
-    @Lob
-    @Column
-    @Type(type = "org.hibernate.type.BinaryType")
-    private Blob plotLayoutImage;
-    @Column
-    private Clob description;
     @Column
     private String ventureFeatures;
+    @Lob
     @Column
     private String ventureHighlights;
 
+    @Column
+    private VentureType ventureType;
 
+    @Column
+    private boolean reraApproved;
 
+    @Column
+    private String approvedAuthority;
 
-    public String getOrganization() {
+    public VentureType getVentureType() {
+        return ventureType;
+    }
+
+    public void setVentureType(VentureType ventureType) {
+        this.ventureType = ventureType;
+    }
+
+    public boolean isReraApproved() {
+        return reraApproved;
+    }
+
+    public void setReraApproved(boolean reraApproved) {
+        this.reraApproved = reraApproved;
+    }
+
+    public String getApprovedAuthority() {
+        return approvedAuthority;
+    }
+
+    public void setApprovedAuthority(String approvedAuthority) {
+        this.approvedAuthority = approvedAuthority;
+    }
+
+    public List<Plot> getPlotList() {
+        return plotList;
+    }
+
+    public void setPlotList(List<Plot> plotList) {
+        this.plotList = plotList;
+    }
+
+    public Organization getOrganization() {
         return organization;
     }
 
-    public void setOrganization(String organization) {
+    public void setOrganization(Organization organization) {
         this.organization = organization;
     }
 
@@ -121,36 +171,44 @@ public class Venture {
         VentureStatus = ventureStatus;
     }
 
-    public int getMinPrice() {
-        return minPrice;
+    public int getActualPrice() {
+        return actualPrice;
     }
 
-    public void setMinPrice(int minPrice) {
-        this.minPrice = minPrice;
+    public void setActualPrice(int actualPrice) {
+        this.actualPrice = actualPrice;
     }
 
-    public int getMaxPrice() {
-        return maxPrice;
+    public int getOfferPrice() {
+        return offerPrice;
     }
 
-    public void setMaxPrice(int maxPrice) {
-        this.maxPrice = maxPrice;
+    public void setOfferPrice(int offerPrice) {
+        this.offerPrice = offerPrice;
     }
 
-    public int getMinSqyds() {
-        return minSqyds;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMinSqyds(int minSqyds) {
-        this.minSqyds = minSqyds;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public int getMaxSqyds() {
-        return maxSqyds;
+    public String getCity() {
+        return city;
     }
 
-    public void setMaxSqyds(int maxSqyds) {
-        this.maxSqyds = maxSqyds;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getLocality() {
@@ -161,35 +219,13 @@ public class Venture {
         this.locality = locality;
     }
 
-    public List<Blob> getDevlopementPhotos() {
-        return devlopementPhotos;
-    }
 
-    public void setDevlopementPhotos(List<Blob> devlopementPhotos) {
-        this.devlopementPhotos = devlopementPhotos;
-    }
 
-    public List<Blob> getPermissionDocs() {
-        return permissionDocs;
-    }
-
-    public void setPermissionDocs(List<Blob> permissionDocs) {
-        this.permissionDocs = permissionDocs;
-    }
-
-    public Blob getPlotLayoutImage() {
-        return plotLayoutImage;
-    }
-
-    public void setPlotLayoutImage(Blob plotLayoutImage) {
-        this.plotLayoutImage = plotLayoutImage;
-    }
-
-    public Clob getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Clob description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

@@ -1,5 +1,6 @@
 package com.unr.realtranz.controller;
 
+import com.unr.realtranz.config.SimpleLogoutHandler;
 import com.unr.realtranz.entities.Users;
 import com.unr.realtranz.model.UserModel;
 import com.unr.realtranz.service.PlotService;
@@ -35,9 +36,9 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping( "/users")
-    public ResponseEntity<List<UserModel>> getUsers(){
-        List<UserModel> userModels = userService.getUsers();
-        return ResponseEntity.ok(userModels);
+    public ResponseEntity<List<Users>> getUsers(){
+        List<Users> users = userService.getUsers();
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping( "/signup")
@@ -56,12 +57,14 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping({"/search","/"})
-    public ModelAndView getSearchResults(Model model){
-        ModelMap modelMap = new ModelMap("plots",plotService.getAllPlotsByVenture("udyana"));
-        ModelAndView modelAndView = new ModelAndView("searchresults",modelMap);
+    @GetMapping("/logoutct")
+    public ModelAndView logout(){
+        ModelAndView modelAndView = new ModelAndView("home");
+        new SimpleLogoutHandler();
         return modelAndView;
     }
+
+
 
     @PostMapping("/login")
     public ModelAndView login(){

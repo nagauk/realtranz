@@ -35,12 +35,12 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="formModalLabel">Update Plot </h3>
+                <h3 class="modal-title" id="formModalLabel" th:text="${plot.venture.description}"> </h3> </h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="close">
                     <!--<span aria-hidden="true">&times;</span>-->
                 </button>
             </div>
-            <form th:action="'/'+@{${plot.venture}}" th:method="post" th:object="${plot}" id="formAwesome">
+            <form th:action="'/plot'" th:method="post" th:object="${plot}" id="formAwesome">
                 <div class="modal-body">
                     <div class="form-group row d-none"> <input type="text" th:field="*{id}"  > </div>
                     <div class="form-group row d-none"> <input type="text" th:field="*{includeGovtCharges}"  th:value="${plot.includeGovtCharges}"> </div>
@@ -50,10 +50,6 @@
                     <div class="form-group row"><label class="col-sm-6 col-form-label">Plot Number</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" th:field="*{plotId}"  th:placeholder="${plot.plotId}" disabled></div>
-                    </div>
-                    <div class="form-group row"><label class="col-sm-6 col-form-label">Venture Name</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" th:field="*{venture}"   th:placeholder="${plot.venture}" disabled></div>
                     </div>
                     <div class="form-group row"><label class="col-sm-6 col-form-label">Plot Size  <i>(in Sqyds)</i> </label>
                         <div class="col-sm-6">

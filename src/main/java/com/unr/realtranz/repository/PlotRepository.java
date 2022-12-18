@@ -2,6 +2,7 @@ package com.unr.realtranz.repository;
 
 import com.unr.realtranz.entities.Plot;
 import com.unr.realtranz.entities.Users;
+import com.unr.realtranz.entities.Venture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,9 +16,11 @@ import java.util.List;
 @Repository
 public interface PlotRepository extends JpaRepository<Plot,Long> {
 
-    List<Plot> findByVenture(String venture);
+    List<Plot> findByVenture(Venture venture);
 
-    Plot findByVentureAndPlotId(String venture, String plotId);
+    Plot findById(long id);
 
-    Plot findByVentureAndId(String venture, Long id);
+    Plot findByVentureAndPlotId(Venture venture, String plotId);
+
+    Plot findByVentureAndId(Venture venture, Long id);
 }

@@ -8,8 +8,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 
@@ -42,16 +48,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/home")
                 .permitAll()
                 .and()
-                .logout().permitAll().and().httpBasic();
+                .logout()
+                .logoutUrl("/logout")
+                .permitAll().and().httpBasic();
         ;
     }
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/dashboard","/signup","/hello","/search","/home","/css/**","/js/**","/**");
+        web.ignoring().antMatchers("/dashboard","/signup","/plotstatus/*","/search","/home","/css/**","/js/**","/**/**");
     }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {

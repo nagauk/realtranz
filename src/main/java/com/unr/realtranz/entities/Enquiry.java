@@ -1,5 +1,8 @@
 package com.unr.realtranz.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 /***
@@ -9,28 +12,53 @@ import javax.persistence.*;
  **/
 @Entity
 @Table
-public class Enquiry {
+public class Enquiry extends Audiatable{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "enquirySeqGen", sequenceName = "enquirySeq", initialValue = 1, allocationSize = 10000000)
+    @GeneratedValue(generator = "enquirySeqGen")
     private Long id;
 
-    @Column
-    private String name;
+    @Column(nullable = false)
+    private String userName;
 
-    @Column
-    private int plotId;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "plot_enquiry", joinColumns = @JoinColumn(name = "plot_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "enquiry_id", referencedColumnName = "id"))
+    private Plot plot;
 
-    @Column
+    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
     @Column
     private String details;
 
-    @Column
+    @Column(nullable = false)
     private String venture;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column
+    private Integer expectedPrice;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getExpectedPrice() {
+        return expectedPrice;
+    }
+
+    public void setExpectedPrice(Integer expectedPrice) {
+        this.expectedPrice = expectedPrice;
+    }
 
     public Long getId() {
         return id;
@@ -40,20 +68,20 @@ public class Enquiry {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String name) {
+        this.userName = name;
     }
 
-    public int getPlotId() {
-        return plotId;
+    public Plot getPlot() {
+        return plot;
     }
 
-    public void setPlotId(int plotId) {
-        this.plotId = plotId;
+    public void setPlot(Plot plot) {
+        this.plot = plot;
     }
 
     public String getPhoneNumber() {
