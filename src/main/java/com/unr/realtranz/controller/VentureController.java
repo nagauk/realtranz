@@ -19,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,6 +74,7 @@ public class VentureController {
     @Autowired
     private PlotRepository plotRepository;
     @GetMapping({"/availableplots/{venture}"})
+    @Transactional
     public ModelAndView getAvailablePlotsByVenture(@PathVariable("venture") String venture,@RequestParam(required = false) String keyword,
                                                    @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "8") int size){
 
@@ -83,7 +85,7 @@ public class VentureController {
 
         Page<Plot> pageTuts;
         if (keyword == null) {
-            pageTuts = plotRepository.findAll(paging);
+            pageTuts = plotRepository.findByVenture(ventureRepository.findByVentureName(venture),paging);
         } else {
             pageTuts = plotRepository.findByPltStatusAndPlotIdContainingIgnoreCaseOrPlotSizeContainingIgnoreCaseOrFacingContainingIgnoreCase(PlotStatus.AVAILABLE,keyword,keyword,keyword,paging);
 

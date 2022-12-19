@@ -21,6 +21,8 @@ public interface PlotRepository extends JpaRepository<Plot,Long> {
 
     List<Plot> findByVenture(Venture venture);
 
+    Page<Plot> findByVenture(Venture venture, Pageable pageable);
+
     Plot findById(long id);
 
     Plot findByVentureAndPlotId(Venture venture, String plotId);
