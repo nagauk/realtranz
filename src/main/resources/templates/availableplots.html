@@ -43,8 +43,8 @@
                 </div>
             </div><br/>
         </div>-->
-        <h3>Available Plots in: <b>[[${venture.description}]]</b></h3><br/>
-         Available Plots count  :<b th:text="${#lists.size(availablePlots)}"> </b><br/>
+        <h3>Available Plots in [[${totalPages}]]: <b> [[${venture.description}]]</b></h3><br/>
+         Available Plots count   :<b th:text="${#lists.size(availablePlots)}"> </b><br/>
         <div class="card">
         <div class="card-block">
             <table class="table table-hover">
@@ -52,7 +52,7 @@
                 <tr>
                     <th>Plot ID</th>
                     <th>Plot Size</th>
-                    <th>Plot Facing</th>
+                    <th>Plot Facing </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -60,7 +60,9 @@
                     <td th:text="${plot.plotId}"></td>
                     <td th:text="${plot.plotSize}"></td>
                     <td th:text="${plot.facing}"></td>
-                    <td> <a th:href="@{/plot?(plotid=${plot.id})}" class="btn btn-primary enquiryButton" data-toggle="modal" data-target="#exampleModal">Book/Enquiry</a></td>
+                    <td > <a th:if="@{${plot.pltStatus}} == 'AVAILABLE'" th:href="@{/plot?(plotid=${plot.id})}" class="btn btn-primary enquiryButton" data-toggle="modal" data-target="#exampleModal">Book/Enquiry</a>
+                        <span cplor="red" th:unless="@{${plot.pltStatus}} == 'AVAILABLE'" th:text="'This Plot '+${plot.pltStatus}"></span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -68,7 +70,7 @@
 
             <ul class="nav nav-pills">
                 <li class="nav-item"
-                    th:each="i : ${#numbers.sequence(0,10)}">
+                    th:each="i : ${#numbers.sequence(0,totalPages-1)}">
                     <a th:href="'/availableplots/'+${ventureName}+'?page='+${i}" th:text="${i}" class="nav-link"
                        th:classappend="${currentPage}==${i}?'active':''"></a>
                 </li>

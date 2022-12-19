@@ -3,12 +3,15 @@ package com.unr.realtranz.controller;
 import com.unr.realtranz.entities.Plot;
 import com.unr.realtranz.entities.Venture;
 import com.unr.realtranz.models.PlotStatus;
+import com.unr.realtranz.repository.PlotRepository;
 import com.unr.realtranz.repository.VentureRepository;
 import com.unr.realtranz.service.OrganizationService;
 import com.unr.realtranz.service.UserService;
 import com.unr.realtranz.service.VentureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -66,17 +69,40 @@ public class VentureController {
 
     @Autowired
     private VentureRepository ventureRepository;
+
+    @Autowired
+    private PlotRepository plotRepository;
     @GetMapping({"/availableplots/{venture}"})
-    public ModelAndView getAvailablePlotsByVenture(@PathVariable("venture") String venture, @RequestParam(defaultValue = "0") int page){
+    public ModelAndView getAvailablePlotsByVenture(@PathVariable("venture") String venture,@RequestParam(required = false) String keyword,
+                                                   @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "8") int size){
+
+
         List<Plot> plotList = new ArrayList<>();
-        if (null != ventureRepository.findAll(PageRequest.of(page,10))){
-            plotList = ventureService.getVentureByName(venture).getPlotList().stream().filter(p -> (p.getVenture().getVentureName().equals(venture) && p.getPltStatus() == PlotStatus.AVAILABLE)).collect(Collectors.toList());
+
+        Pageable paging = PageRequest.of(page - 1, size);
+
+        Page<Plot> pageTuts;
+        if (keyword == null) {
+            pageTuts = plotRepository.findAll(paging);
+        } else {
+            pageTuts = plotRepository.findByPltStatusAndPlotIdContainingIgnoreCaseOrPlotSizeContainingIgnoreCaseOrFacingContainingIgnoreCase(PlotStatus.AVAILABLE,keyword,keyword,keyword,paging);
+
         }
+
+        plotList = pageTuts.getContent();
         ModelMap modelMap = new ModelMap("availablePlots",plotList);
+
+        modelMap.addAttribute("keyword", keyword);
+        modelMap.addAttribute("availablePlots",plotList);
+        modelMap.addAttribute("currentPage", pageTuts.getNumber() + 1);
+        modelMap.addAttribute("totalItems", pageTuts.getTotalElements());
+        modelMap.addAttribute("totalPages", pageTuts.getTotalPages());
+        modelMap.addAttribute("pageSize", size);
         modelMap.addAttribute("ventureName",venture);
-        modelMap.addAttribute("currentPage", page);
+        modelMap.addAttribute("ventureName",venture);
         modelMap.addAttribute("venture", ventureService.getVentureByName(venture));
         ModelAndView modelAndView = new ModelAndView("availableplots",modelMap);
+
         return modelAndView;
     }
 

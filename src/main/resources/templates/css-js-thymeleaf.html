@@ -1,15 +1,114 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Add CSS and JS to template</title>
-    <link th:herf="@{/css/main.css}" rel="stylesheet"></link>
-    <script type="text/javascript" th:src="@{/js/actions.js}"></script>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="author" content="Nagaraju Ukkalam"/>
+    <title>Update Plot</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
+    <link th:href="@{css/styles.css}" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+    <script th:src="@{js/scripts.js}"></script>
+    <script type="text/javascript" src="js/main.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/chart-area-demo.js}"></script>
+    <script th:src="@{/js/chart-bar-demo.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script th:src="@{/js/datatables-simple-demo.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
 </head>
 <body>
-    <h2>Hello CSS and JS exaple</h2>
-    <p>this is the vey special example for my duaghter <strong> Teekshika Ukkalam</strong>
-    </p>
-    <button type="button" th:onclick="demo()">Alert</button>
+<h3>Available Plots in: <b>[[${venture.description}]]</b></h3><br/>
+Available Plots count  :<b th:text="${#lists.size(availablePlots)}"> </b><br/>
+<div>
+    <form th:action="@{/tutorials}" id="searchForm">
+        <div class="row d-flex">
+            <div class="col-md-6 mt-2">
+                <div class="search">
+                    <i class="fa fa-search"></i>
+                    <input id="keyword" type="search" name="keyword" th:value="${keyword}" required class="form-control"
+                           placeholder="Enter keyword">
+                    <button type="submit" class="btn btn-secondary">Search</button>
+                </div>
+            </div>
+            <div class="col-md-3 input-group mt-2">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="pageSize">Items per page:</label>
+                </div>
+                <select form="searchForm" name="size" th:value="${pageSize}" onchange="changePageSize()" class="size-select"
+                        id="pageSize">
+                    <option th:each="s : ${ {3, 6, 9} }" th:value="${s}" th:text="${s}" th:selected="${s == pageSize}"></option>
+                </select>
+            </div>
+            <div class="col-md-1 mt-2">
+                <button id="btnClear" class="btn btn-info">Clear</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:if="${tutorials.size() > 0}">
+    <table class="table table-hover table-responsive-xl">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Plot ID</th>
+            <th scope="col">Plot Size</th>
+            <th scope="col">Plot Facing</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="plot :${availablePlots}">
+            <th scope="row">[[${plot.plotId}]]</th>
+            <td>[[${plot.plotSize}]]</td>
+            <td>[[${plot.facing}]]</td>
+            <td><a th:href="@{/plot?(plotid=${plot.id})}" class="btn btn-primary enquiryButton" data-toggle="modal" data-target="#exampleModal">Book/Enquiry</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:unless="${availablePlots.size() > 0}">
+    <span>No Plots found!</span>
+</div>
+
+<nav aria-label="Pagination" th:if="${totalPages > 0}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+            <a th:replace="fragments/paging :: paging(1, '<<', 'First Page')"></a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+            <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+            <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+            th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+            <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+            <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+        </li>
+    </ul>
+</nav>
+
 </body>
 </html>
