@@ -48,7 +48,7 @@ public class EnquiryController {
 
     @Autowired
     EnquiryRepository enquiryRepository;
-    @RequestMapping(value="/enquiry", method = RequestMethod.GET)
+    @RequestMapping(value="/enquiries", method = RequestMethod.GET)
     public List<Enquiry> getEnquiries(){
         return enquiryRepository.findAll();
     }
