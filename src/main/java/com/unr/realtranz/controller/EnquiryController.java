@@ -4,6 +4,7 @@ import com.unr.realtranz.entities.Enquiry;
 import com.unr.realtranz.entities.Plot;
 import com.unr.realtranz.entities.Venture;
 import com.unr.realtranz.models.PlotStatus;
+import com.unr.realtranz.repository.EnquiryRepository;
 import com.unr.realtranz.service.EnquiryService;
 import com.unr.realtranz.service.VentureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,13 @@ public class EnquiryController {
     @RequestMapping(value="/enquiry/plot", method = RequestMethod.GET)
     public String getEnquiry(@ModelAttribute("enquiryObj") Enquiry enquiry,Model model){
         return "Enquiry Created";
+    }
+
+    @Autowired
+    EnquiryRepository enquiryRepository;
+    @RequestMapping(value="/enquiry", method = RequestMethod.GET)
+    public List<Enquiry> getEnquiries(){
+        return enquiryRepository.findAll();
     }
 
 
