@@ -29,6 +29,8 @@
     <script th:src="@{/js/datatables-simple-demo.js}"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
+
+
 </head>
 <body>
 <div th:replace="header"></div>
@@ -59,8 +61,8 @@
                     <td th:text="${plot.plotId}"></td>
                     <td th:text="${plot.plotSize}"></td>
                     <td th:text="${plot.facing}"></td>
-                    <td > <a th:if="@{${plot.pltStatus}} == 'AVAILABLE'" th:href="@{/plot?(plotid=${plot.id})}" class="btn btn-primary enquiryButton" data-toggle="modal" data-target="#exampleModal">Book/Enquiry</a>
-                        <span cplor="red" th:unless="@{${plot.pltStatus}} == 'AVAILABLE'" th:text="'This Plot '+${plot.pltStatus}"></span>
+                    <td > <a th:if="@{${plot.pltStatus}} == 'AVAILABLE'" th:href="@{/plot?(plotid=${plot.id})}" class="btn btn-primary enquiryButton" data-toggle="modal" data-target="#exampleModal">Book Free Site Visit/Enquiry Plot</a>
+                        <b th:unless="@{${plot.pltStatus}} == 'AVAILABLE'" th:text="'This Plot '+${plot.pltStatus}" style="color:red"></b>
                     </td>
                 </tr>
                 </tbody>
@@ -90,7 +92,7 @@
 
                             $('.enquiryForm #plotId').val(plot.plotId);
                             $('.enquiryForm #facing').val(plot.facing);
-                             $('.enquiryForm #details').val(plot.venture.ventureName+':::'+plot.plotId);
+                             $('.enquiryForm #details').val(plot.venture.ventureName+':::'+plot.plotId+::+');
                             $('.enquiryForm #pltStatus').val(plot.pltStatus);
                             $('.enquiryForm #plotsize').val(plot.plotSize);
 
@@ -170,16 +172,28 @@
                                     <input type="text" class="form-control" id="email" name="email">
                                 </div>
                             </div>
-                            <div class="mb-6 row">
-                                <label for="expectedPrice" class="col-sm-5 col-form-label">Expected Price<i class="bi bi-currency-rupee"></i> : </label>
-                                <div class="col-sm-6">
-                                    <input type="textarea" class="form-control" id="expectedPrice" name="expectedPrice">
+
+
+
+
+                            <div class="mb-3 row">
+
+                                <label for="question" class="col-sm-5 col-form-label"><b>Free Site Visit? : </b></label>
+                                <div class="col-sm-7">
+                                    <input type="checkbox" id="question" name="question" onclick="myFunction()">
+                                </div>
+                            </div>
+
+                            <div id="hiddendatetime"  class="mb-3 row" style="display:none">
+                                <label for="selectdatetime" class="col-sm-5 col-form-label"> Date&Time for Site Visit: </label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="selectdatetime" name="selectdatetime">
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="description" class="col-sm-5 col-form-label">More Details : </label>
                                 <div class="col-sm-7">
-                                    <textarea class="form-control" id="description" rows="3" name="description"></textarea>
+                                    <br/><textarea class="form-control" id="description" rows="4" name="description"></textarea>
                                 </div>
                             </div>
 
