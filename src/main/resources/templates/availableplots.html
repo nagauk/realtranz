@@ -35,16 +35,7 @@
 <body>
 <div th:replace="header"></div>
     <div class = "container">
-        <!--<div class="row">
-            <div class="dropdown justify-content-end">
-                <button class="btn btn-primary " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Layout With Plots Status
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <div th:replace="layoutstatus"></div>
-                </div>
-            </div><br/>
-        </div>-->
+
         <h3> <b> [[${venture.description}]]</b></h3><br/>
         <div class="card">
         <div class="card-block">
@@ -70,6 +61,7 @@
             <hr/>
 
             <ul class="nav nav-pills">
+                <li class="nav-item nav-link">Select Pages ></li>
                 <li class="nav-item"
                     th:each="i : ${#numbers.sequence(1,totalPages)}">
                     <a th:href="'/availableplots/'+${ventureName}+'?page='+${i}" th:text="${i}" class="nav-link"

@@ -76,7 +76,7 @@ public class VentureController {
     @GetMapping({"/availableplots/{venture}"})
     @Transactional
     public ModelAndView getAvailablePlotsByVenture(@PathVariable("venture") String venture,@RequestParam(required = false) String keyword,
-                                                   @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "8") int size){
+                                                   @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size){
 
 
         List<Plot> plotList = new ArrayList<>();
