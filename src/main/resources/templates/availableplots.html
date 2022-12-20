@@ -71,7 +71,7 @@
 
             <ul class="nav nav-pills">
                 <li class="nav-item"
-                    th:each="i : ${#numbers.sequence(0,totalPages)}">
+                    th:each="i : ${#numbers.sequence(1,totalPages)}">
                     <a th:href="'/availableplots/'+${ventureName}+'?page='+${i}" th:text="${i}" class="nav-link"
                        th:classappend="${currentPage}==${i}?'active':''"></a>
                 </li>
@@ -92,7 +92,7 @@
 
                             $('.enquiryForm #plotId').val(plot.plotId);
                             $('.enquiryForm #facing').val(plot.facing);
-                             $('.enquiryForm #details').val(plot.venture.ventureName+':::'+plot.plotId+::+');
+                             $('.enquiryForm #details').val(plot.venture.ventureName+':::'+plot.plotId);
                             $('.enquiryForm #pltStatus').val(plot.pltStatus);
                             $('.enquiryForm #plotsize').val(plot.plotSize);
 
@@ -120,35 +120,35 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <input type="text" class="form-control" id="details" name="details" hidden>
                             <div class="mb-3 row">
                                 <label for="venture" class="col-sm-5 col-form-label">Venture :</label>
                                 <div class="col-sm-7">
-                                    <input type="text" readonly class="form-control-plaintext" id="venture" th:value="${venture.ventureName}" name="venture" >
+                                    <b><input type="text" readonly class="form-control-plaintext" id="venture" th:value="${venture.ventureName}" name="venture" ></b>
+
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="plotId" class="col-sm-5 col-form-label">Plot ID :</label>
                                 <div class="col-sm-7">
-                                    <input type="text" readonly class="form-control-plaintext" id="plotId" >
+                                    <b><input type="text" readonly class="form-control-plaintext" id="plotId" ></b>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="facing" class="col-sm-5 col-form-label">Plot Facing :</label>
                                 <div class="col-sm-7">
-                                    <input type="text" readonly class="form-control-plaintext" id="facing" >
+                                    <b><input type="text" readonly class="form-control-plaintext" id="facing" ></b>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="pltStatus" class="col-sm-5 col-form-label">Plot Status :</label>
                                 <div class="col-sm-7">
-                                    <input type="text" readonly class="form-control-plaintext" id="pltStatus">
+                                    <b><input type="text" readonly class="form-control-plaintext" id="pltStatus"></b>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="plotsize" class="col-sm-5 col-form-label">Plot Size(<i>in SQYDs</i>) :</label>
                                 <div class="col-sm-7">
-                                    <input type="text" readonly class="form-control-plaintext" id="plotsize">
+                                    <b><input type="text" readonly class="form-control-plaintext" id="plotsize"></b>
                                 </div>
                             </div>
 
@@ -174,26 +174,36 @@
                             </div>
 
 
-
-
-                            <div class="mb-3 row">
-
+                            <!--<div class="mb-3 row">
+                                <script>
+                                    function myFunction() {
+                                      var checkBox = document.getElementById("question");
+                                      var text = document.getElementById("hiddendatetime");
+                                      if (checkBox.checked == true){
+                                        text.style.display = "flex";
+                                      } else {
+                                         text.style.display = "none";
+                                      }
+                                    }
+                                </script>
                                 <label for="question" class="col-sm-5 col-form-label"><b>Free Site Visit? : </b></label>
                                 <div class="col-sm-7">
                                     <input type="checkbox" id="question" name="question" onclick="myFunction()">
                                 </div>
                             </div>
 
-                            <div id="hiddendatetime"  class="mb-3 row" style="display:none">
-                                <label for="selectdatetime" class="col-sm-5 col-form-label"> Date&Time for Site Visit: </label>
+                            <div id="hiddendatetime"  class="mb-3 row" style="display :none;">
+                                <label for="selectdatetime" class="col-sm-5 col-form-label"> Date for Site Visit: </label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="selectdatetime" name="selectdatetime">
+                                    <input type="date" class="form-control" id="selectdatetime" name="selectdatetime">
                                 </div>
-                            </div>
+                            </div>-->
+                            <input type="text" class="form-control" id="details" name="details" hidden>
+
                             <div class="mb-3 row">
-                                <label for="description" class="col-sm-5 col-form-label">More Details : </label>
+                                <label for="description" class="col-sm-5 col-form-label">Provide Date and Time for free site visit : </label>
                                 <div class="col-sm-7">
-                                    <br/><textarea class="form-control" id="description" rows="4" name="description"></textarea>
+                                    <br/><textarea class="form-control" id="description" rows="2" name="description" placeholder="Format: 12-12-2022 10:10 AM"></textarea>
                                 </div>
                             </div>
 
@@ -209,27 +219,7 @@
         </form>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="alert alert-danger">
-                        Are you sure you want to delete this country?
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <a href =""  class="btn btn-danger"  id="delRef">Delete</a>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 </div>
 <div th:replace="footer"></div>

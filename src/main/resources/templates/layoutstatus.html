@@ -234,6 +234,15 @@ body {
         </table>
     </li>
 
+    <li th:if="@{${venture.ventureType}} != 'FARMLAND'">
+        <table>
+            <tbody>
+            <tr>
+                <td bgcolor="gray" style="color: white;">Mortgage</td>
+            </tr>
+            </tbody>
+        </table>
+    </li>
 
 </ul>
 
