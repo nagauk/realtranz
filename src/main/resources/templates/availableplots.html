@@ -52,7 +52,7 @@
                     <td th:text="${plot.plotId}"></td>
                     <td th:text="${plot.plotSize}"></td>
                     <td th:text="${plot.facing}"></td>
-                    <td > <a th:if="@{${plot.pltStatus}} == 'AVAILABLE'" th:href="@{/plot?(plotid=${plot.id})}" class="btn btn-primary enquiryButton" data-toggle="modal" data-target="#exampleModal">Book Free Site Visit/Enquiry Plot</a>
+                    <td > <a th:if="@{${plot.pltStatus}} == 'AVAILABLE'" th:href="@{/plot?(plotid=${plot.id})}" class="btn-sm btn btn-primary enquiryButton" data-toggle="modal" data-target="#exampleModal">Book Free Site Visit/Enquiry Plot</a>
                         <b th:unless="@{${plot.pltStatus}} == 'AVAILABLE'" th:text="'This Plot '+${plot.pltStatus}" style="color:red"></b>
                     </td>
                 </tr>

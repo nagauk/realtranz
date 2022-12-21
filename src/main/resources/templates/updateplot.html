@@ -67,8 +67,7 @@
                                 <option style="background: blue; color: white;" th:value="BOOKED">BOOKED</option>
                                 <option style="background: orangered ; color: white;" th:value="SOLD">SOLD</option>
                                 <option style="background: orchid; color: white;" th:value="BLOCKED">BLOCKED</option>
-                                <option style="background: orchid; color: white;" th:value="BLOCKED">BLOCKED</option>
-                                <option th:if="@{${plot.venture.ventureType}} != 'FARMLAND'" style="background: gray; color: white;" th:value="MORTGAGE">MORTGAGE</option>
+                                <option th:if="@{${plot.venture.ventureType}} != 'FARMLAND'" style="background: purple; color: white;" th:value="MORTGAGE">MORTGAGE</option>
                             </select>
                         </div>
                     </div>
