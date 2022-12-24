@@ -26,8 +26,22 @@
                         </div>
                         <div class="mt-2 row">
                             <div class="col">
-                                Total Plots :<b th:text="${#lists.size(venture.plotList)}"></b>
+                                Total Plots :<b th:text="${#lists.size(venture.plotList)}"></b><br/>
+                                Available Plots: <input type="number" th:id="'availablePlots'+${venture.id}" style="background-color:white;border:none;" disabled></input>
+                                <script th:inline="javascript">
+                                     $(document).ready(function(){
+                                         var plots= [[${venture.plotList}]];
+                                         var count=0;
+                                         for (let i = 0; i < plots.length; i++) {
+                                             if(plots[i].pltStatus == 'AVAILABLE'){
+                                                count++;
+                                             }
+                                         }
+                                         var name='availablePlots[[${venture.id}]]';
 
+                                          $("#availablePlots[[${venture.id}]]").val(count);
+                                     });
+                                </script>
                             </div>
                             <div class="col">
                                 <span th:if="${venture.approvedAuthority} != null">

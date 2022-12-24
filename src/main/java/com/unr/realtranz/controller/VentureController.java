@@ -6,6 +6,7 @@ import com.unr.realtranz.models.PlotStatus;
 import com.unr.realtranz.repository.PlotRepository;
 import com.unr.realtranz.repository.VentureRepository;
 import com.unr.realtranz.service.OrganizationService;
+import com.unr.realtranz.service.PlotService;
 import com.unr.realtranz.service.UserService;
 import com.unr.realtranz.service.VentureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,13 @@ import java.util.stream.Collectors;
 public class VentureController {
 
     @Autowired
-    VentureService ventureService;
+    private VentureService ventureService;
 
     @Autowired
-    OrganizationService organizationService;
+    private OrganizationService organizationService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(value="/venture",method = RequestMethod.POST)
     public ResponseEntity saveVenture(@RequestBody Venture venture){
@@ -56,6 +57,7 @@ public class VentureController {
     @RequestMapping(value="/plotstatus/{venture}",method = RequestMethod.GET)
     public ModelAndView getVentureStatus(@PathVariable("venture") String ventureName){
         ModelMap modelMap = new ModelMap("venture",ventureService.getVentureByName(ventureName));
+
         ModelAndView modelAndView = new ModelAndView("layoutstatus",modelMap);
         return modelAndView;
     }
