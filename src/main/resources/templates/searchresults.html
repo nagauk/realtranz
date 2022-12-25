@@ -8,27 +8,40 @@
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">
         <div th:replace="navbar"></div>
-        <tr th:each="venture: ${ventures}"> <main>
-            <div class="container-fluid px-4">
-                <div class="mt-4 card mb-4">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <b class="font-weight-bold" th:text="${venture.description}" style="font-size:15px"></b> <br/> <i th:if="@{${venture.organization}!=null}"style="font-size:10px" class="font-weight-light" th:text="'by '+@{${venture.organization.name}}"></i>
+        <tr th:each="venture: ${ventures}">
+            <main>
+                <div class="container-fluid px-4">
+                    <div class="mt-4 card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <b class="font-weight-bold" th:text="${venture.description}"
+                                       style="font-size:15px"></b> <br/> <i th:if="@{${venture.organization}!=null}"
+                                                                            style="font-size:10px"
+                                                                            class="font-weight-light"
+                                                                            th:text="'by '+@{${venture.organization.name}}"></i>
+                                </div>
+                                <div class="col">
+                                    Actual Price:<i class="bi bi-currency-rupee"></i>
+                                    <del><b th:text="${venture.actualPrice}"></b></del>
+                                    <br/>
+                                    Offer Price:<i class="bi bi-currency-rupee"></i><b
+                                        th:text="${venture.offerPrice}"></b>
+                                </div>
+                                <div class="col">
+                                    <a th:href="'/availableplots/'+${venture.ventureName}" target="_blank">
+                                        <button type="button" class="btn btn-primary" style="font-size=20px;"><span>Book Free Site Visit/Enquiry Plot </span>
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col">
-                                Actual Price:<i class="bi bi-currency-rupee"></i><del><b th:text="${venture.actualPrice}"></b></del><br/>
-                                Offer Price:<i class="bi bi-currency-rupee"></i><b th:text="${venture.offerPrice}"></b>
-                            </div>
-                            <div class="col">
-                                <a th:href="'/availableplots/'+${venture.ventureName}" target="_blank"><button type="button" class="btn btn-primary" style="font-size=20px;"> <span >Book Free Site Visit/Enquiry Plot </span></button></a>
-                            </div>
-                        </div>
-                        <div class="mt-2 row">
-                            <div class="col">
-                                Total Plots :<b th:text="${#lists.size(venture.plotList)}"></b><br/>
-                                Available Plots: <input type="number" th:id="'availablePlots'+${venture.id}" style="background-color:white;border:none;" disabled></input>
-                                <script th:inline="javascript">
+                            <div class="mt-2 row">
+                                <div class="col">
+                                    Total Plots :<b th:text="${#lists.size(venture.plotList)}"></b><br/>
+                                    Available Plots: <input type="number" th:id="'availablePlots'+${venture.id}"
+                                                            style="background-color:white;border:none;"
+                                                            disabled></input>
+                                    <script th:inline="javascript">
                                      $(document).ready(function(){
                                          var plots= [[${venture.plotList}]];
                                          var count=0;
@@ -41,95 +54,115 @@
 
                                           $("#availablePlots[[${venture.id}]]").val(count);
                                      });
-                                </script>
-                            </div>
-                            <div class="col">
+
+                                    </script>
+                                </div>
+                                <div class="col">
                                 <span th:if="${venture.approvedAuthority} != null">
-                                    <i class="bi bi-house-door-fill" style="font-size:20px;color:orange"> </i>Approved Authority :<b th:text="${venture.approvedAuthority}"></b><br/>
+                                    <i class="bi bi-house-door-fill" style="font-size:20px;color:orange"> </i>Approved Authority :<b
+                                        th:text="${venture.approvedAuthority}"></b><br/>
                                 </span>
-                                <b th:if="${venture.approvedAuthority} == null"><i class="bi bi-stack" style="marging-top:5px;font-size:20px;color:green"> </i> Farm Land</b><br/>
-                            </div>
+                                    <b th:if="${venture.approvedAuthority} == null"><i class="bi bi-stack"
+                                                                                       style="marging-top:5px;font-size:20px;color:green"> </i>
+                                        Farm Land</b><br/>
+                                </div>
 
-                            <div class="col">
-                                <a class="bi bi-geo-alt" th:href="${venture.mapLocation}" target="_blank" style="color:#337ab7;font-size:18px;">Map Direction </a><br/>Address :<b th:text="${venture.ventureAddress}"></b>
+                                <div class="col">
+                                    <a class="bi bi-geo-alt" th:href="${venture.mapLocation}" target="_blank"
+                                       style="color:#337ab7;font-size:18px;">Map Direction </a><br/>Address :<b
+                                        th:text="${venture.ventureAddress}"></b>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mt-4 row">
-                            <div class="col">
-                                <div class="dropdown">
-                                    <button class="btn btn-primary " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Layout With Plots Status
+                            <div class="mt-4 row">
+                                <div class="col">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary " type="button" id="dropdownMenuButton"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Layout With Plots Status
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <div th:replace="layoutstatus"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col">
+
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            th:data-target="'#devlopment'+${venture.id}">
+                                        Venture Highlights <i class="bi bi-water"> </i><i
+                                            class="bi bi-car-front-fill"> </i>
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <div th:replace="layoutstatus"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col">
-
-                                <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#devlopment'+${venture.id}">
-                                    Venture Highlights <i class="bi bi-water"> </i><i class="bi bi-car-front-fill"> </i>
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" th:id="'devlopment'+${venture.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="exampleModalLongTitle0">Venture Highlights</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body" th:utext="${venture.ventureHighlights}">
+                                    <!-- Modal -->
+                                    <div class="modal fade" th:id="'devlopment'+${venture.id}" tabindex="-1"
+                                         role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="exampleModalLongTitle0">Venture
+                                                        Highlights</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" th:utext="${venture.ventureHighlights}">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+
                                 </div>
 
+                                <div class="col">
 
-                            </div>
-
-                            <div class="col">
-
-                                <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#documents'+${venture.id}">
-                                    Venture Features <i class="bi bi-airplane"> </i><i class="bi bi-train-lightrail-front"> </i><i class="bi bi-buildings"> </i>
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" th:id="'documents'+${venture.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="exampleModalLongTitle1">Venture Features </h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <span th:utext="${venture.ventureFeatures}"></span>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            th:data-target="'#documents'+${venture.id}">
+                                        Venture Features <i class="bi bi-airplane"> </i><i
+                                            class="bi bi-train-lightrail-front"> </i><i class="bi bi-buildings"> </i>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" th:id="'documents'+${venture.id}" tabindex="-1"
+                                         role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="exampleModalLongTitle1">Venture
+                                                        Features </h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <span th:utext="${venture.ventureFeatures}"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+
                                 </div>
 
-
                             </div>
-
                         </div>
                     </div>
+
                 </div>
 
-            </div>
-
-        </main></tr>
+            </main>
+        </tr>
         <div th:replace="footer"></div>
     </div>
 
 </div>
+
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
     $(#dropdownMenuButton).dropdown('show');
+
 </script>
+
 </body>
 </html>

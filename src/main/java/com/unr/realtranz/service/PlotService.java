@@ -26,13 +26,12 @@ public class PlotService {
 
     @Autowired
     VentureService ventureService;
-    public int savePlotsDetails(Venture venture){
+    public int savePlotsDetails(Venture venture,String filePath){
         String line = "";
         String splitBy = ",";
         List<Plot>  plotList = new ArrayList<>();
         try {
-//parsing a CSV file into BufferedReader class constructor
-            BufferedReader br = new BufferedReader(new FileReader("W:/aptshome/railwaydeployed_bkp/plotdataradh.csv"));
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
 
             while ((line = br.readLine()) != null)
             {

@@ -34,9 +34,9 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand ps-3" href="/">APTSHome</a>
-       <!-- <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-                class="fas fa-bars"></i></button>-->
-        <!--<ul sec:authorize="isAuthenticated()" class="navbar-nav ms-auto me-3 me-lg-4">
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <ul sec:authorize="isAuthenticated()" class="navbar-nav ms-auto me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -46,30 +46,23 @@
                     <li >
                         <hr class="dropdown-divider"/>
                     </li>
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="/login?logout">Logout</a></li>
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     <li>
                         <hr class="dropdown-divider"/>
                     </li>
-                  &lt;!&ndash;  <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                   &ndash;&gt;
-                    <li th:if="${#authentication == null}" data-toggle="modal" data-target="#exampleModalCenter"><a class="dropdown-item" href="#">Login/Register</a></li>
+                  <!--  <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                   -->
                 </ul>
             </li>
-        </ul>-->
+        </ul>
 
 
 
 
-        <!--  <li th:if="${#authentication == null}" >
-                            <a class="dropdown-item" href="#">
 
-                        </a></li>-->
-       <!-- <button th:if="${#authentication == null}" type="button" class="navbar-nav ms-auto me-3 me-lg-4 btn btn-primary" data-toggle="modal"
-                data-target="#loginorregister">
-            Login/Register
-        </button>-->
+        <a sec:authorize="isAnonymous()" href="/login" type="button" class="navbar-nav ms-auto me-3 me-lg-4 btn btn-primary" style="color:white;">
+            <b>Login/Register</b>
+        </a>
 
     </nav>
 </body>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 /***
@@ -37,8 +38,15 @@ public class Users  extends Audiatable{
     @Column
     private Long income;
 
-    @Column
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+
+    private Collection< Role > roles;
 
     @Column
     private boolean enabled;
@@ -54,6 +62,18 @@ public class Users  extends Audiatable{
     @JsonIgnore
     private List<Organization> organizationList;
 
+    public Users(){
+
+    }
+    public Users(String firstName, String lastName, String username, String encode, Collection< Role > roles, String email_id, String phone1) {
+        this.email_id = email_id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName= lastName;
+        this.password = encode;
+        this.roles = roles;
+        this.phone1 = phone1;
+    }
 
 
     public String getNationality() {
@@ -72,12 +92,12 @@ public class Users  extends Audiatable{
         this.enabled = enabled;
     }
 
-    public String getRole() {
-        return role;
+    public Collection<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
     public List<Organization> getOrganizationList() {

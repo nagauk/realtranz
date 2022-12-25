@@ -36,8 +36,8 @@ public class PlotController {
     @Autowired
     VentureService ventureService;
     @RequestMapping(value="/plot/{venture}",method = RequestMethod.POST)
-    public ResponseEntity createPlots(@PathVariable("venture") String venture){
-       plotService.savePlotsDetails(ventureService.getVentureByName(venture));
+    public ResponseEntity createPlots(@PathVariable("venture") String venture,@Param("file-path") String filePath){
+       plotService.savePlotsDetails(ventureService.getVentureByName(venture),filePath);
        return new ResponseEntity<>("Created Plots",HttpStatus.CREATED);
     }
 
