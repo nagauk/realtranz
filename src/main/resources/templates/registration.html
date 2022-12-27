@@ -33,7 +33,7 @@
 
 <!-- create navigation bar ( header) -->
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand ps-3" href="/">APTSHome</a>
+    <a class="navbar-brand ps-3" href="/">TargetNest</a>
 
 </nav>
 
@@ -49,10 +49,10 @@
             <!-- success message -->
             <div th:if="${param.success}">
                 <div class="alert alert-info">You've successfully registered
-                    to our APTSHome awesome app!</div>
+                    to our TargetNest awesome app!</div>
             </div>
 
-            <h1>APTSHome Registration</h1>
+            <h1>TargetNest Registration</h1>
 
             <form th:action="@{/registration}" method="post" th:object="${user}">
                 <div class="form-group">
