@@ -1,14 +1,13 @@
 package com.unr.realtranz.controller;
 
 import com.unr.realtranz.entities.Plot;
+import com.unr.realtranz.entities.Role;
+import com.unr.realtranz.entities.Users;
 import com.unr.realtranz.entities.Venture;
 import com.unr.realtranz.models.PlotStatus;
 import com.unr.realtranz.repository.PlotRepository;
 import com.unr.realtranz.repository.VentureRepository;
-import com.unr.realtranz.service.OrganizationService;
-import com.unr.realtranz.service.PlotService;
-import com.unr.realtranz.service.UserService;
-import com.unr.realtranz.service.VentureService;
+import com.unr.realtranz.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +43,12 @@ public class VentureController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping(value="/venture",method = RequestMethod.POST)
     public ResponseEntity saveVenture(@RequestBody Venture venture){

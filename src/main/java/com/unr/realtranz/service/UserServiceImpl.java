@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,9 +36,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users save(Users registrationDto) {
+        Collection<Role> roles = Arrays.asList(new Role("ROLE_USER"));
+        if(null == registrationDto.getRoles()){
+            roles = registrationDto.getRoles();
+        }
         Users user = new Users(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getUsername(),
-                passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")),registrationDto.getEmail_id(),registrationDto.getPhone1());
+                passwordEncoder.encode(registrationDto.getPassword()),roles,registrationDto.getEmail_id(),registrationDto.getPhone1());
 
         return userRepository.save(user);
     }
@@ -57,6 +60,7 @@ public class UserServiceImpl implements UserService {
     private Collection < ? extends GrantedAuthority > mapRolesToAuthorities(Collection < Role > roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
+    @Override
     public Users getUsersByUserName(String userName){
         Users users = userRepository.findByUsername(userName);
         return users;
@@ -72,6 +76,7 @@ public class UserServiceImpl implements UserService {
         return userModels;
     }
 
+    @Override
     public void saveUser(Users users){
         userRepository.save(users);
     }

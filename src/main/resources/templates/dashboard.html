@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <style>
          .modal-dialog {
 
@@ -17,22 +18,17 @@
     <div id="layoutSidenav_nav">
         <div th:replace="navbar"></div>
     </div>
-    <div id="layoutSidenav_content">
+    <div id="layoutSidenav_content"><br/><br/>
         <main>
             <div class="container-fluid px-4" style="width:98%">
                 <div class="row">
 
-                    <h1 class="mt-4">Organisation name</h1>
                     <div class="row">
                         <div class="col">
-
                             <div class="input-group mb-3">
-                                <select class="form-select md-2" aria-label="Recipient's username"
-                                        aria-describedby="button-addon2">
-                                    <option selected>Select Venture</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+
+                                <select class="form-control ventureDropDownList">
+                                    <option th:each="venture : ${userVentures}" th:value="${venture.ventureName}" th:text="${venture.description}"></option>
                                 </select>
                                 <button class="btn btn-outline-primary" type="button" id="button-addon2">Edit</button>
                             </div>
@@ -112,39 +108,25 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <div class="row">
                     <div class="col">
-
                         <div class="card mb-1">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Requests
+                                Plots List
                             </div>
                             <div class="card-body text-sm-center">
-                                <table class="table table-bordered table-hover" id="">
+                                <table class="table table-bordered table-hover" id="plotlisttable">
                                     <thead>
                                     <tr>
-                                        <th>Plot No</th>
-                                        <th>Plot For</th>
-                                        <th>user</th>
-                                        <th>venture</th>
-                                        <th>Approve/Reject</th>
-
+                                        <th>Plot ID</th>
+                                        <th>Plot Size</th>
+                                        <th>Plot Facing </th>
+                                        <th>Action </th>
                                     </tr>
                                     </thead>
-
                                     <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
 
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -171,6 +153,21 @@
         <div th:replace="footer"></div>
     </div>
 </div>
+<script>
+                                $(document).ready(function(){
 
+                                         var ventureName= $("select.ventureDropDownList").children("option:selected").val();
+                                         var href = '/plots/'+ventureName;
+                                         console.log(href);
+                                           $.get(href, function (plots, status) {
+                                                for(let i =0;i<plots.length;i++){
+                                                    var newRowContent = "<tr><td>"+plots[i].plotId+"</td><td>"+plots[i].plotSize+"</td><td>"+plots[i].pltStatus+"</td><td > <a href='/plot/"+ventureName+"?plotid="+plots[i].plotId+"' class='btn-sm btn btn-primary' target='_blank'><b style='color:white'>Update Plot</b></a></td></tr>"
+                                                    $("#plotlisttable tbody").append(newRowContent);
+                                                }
+                                           });
+
+                                });
+
+                            </script>
 </body>
 </html>

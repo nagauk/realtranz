@@ -6,6 +6,7 @@ import com.unr.realtranz.model.VentureType;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.util.List;
@@ -23,7 +24,8 @@ public class Venture {
     @GeneratedValue(generator = "ventureSeqGen")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.PERSIST)
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_venture", joinColumns = @JoinColumn(name = "venture_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Users owner;

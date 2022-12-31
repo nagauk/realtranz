@@ -1,5 +1,6 @@
 package com.unr.realtranz.service;
 
+import com.unr.realtranz.entities.Users;
 import com.unr.realtranz.entities.Venture;
 import com.unr.realtranz.repository.VentureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,9 @@ public class VentureService {
 
     public List<Venture> getAllVentures() {
        return ventureRepository.findAll();
+    }
+
+    public List<Venture> getAllVenturesByUser(Users user) {
+        return ventureRepository.findByOwner(user);
     }
 }
