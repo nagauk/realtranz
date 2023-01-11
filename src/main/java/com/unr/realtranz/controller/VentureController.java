@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -72,6 +73,18 @@ public class VentureController {
 
     @GetMapping({"/ventures","/"})
     public ModelAndView getAllVentures(){
+        if(SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
+            Long count = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().filter(r -> r.getAuthority().equalsIgnoreCase("ROLE_ADMIN")).count();
+            if(count > 0){
+                String userName  = SecurityContextHolder.getContext().getAuthentication().getName();
+                Users user = userService.getUsersByUserName(userName);
+                List<Venture> ventures = ventureService.getAllVenturesByUser(user);
+                ModelMap modelMap = new ModelMap();
+                modelMap.addAttribute("userVentures",ventures);
+                ModelAndView modelAndView = new ModelAndView("dashboard",modelMap);
+                return modelAndView;
+            }
+        }
         ModelMap modelMap = new ModelMap("ventures",ventureService.getAllVentures());
         ModelAndView modelAndView = new ModelAndView("searchresults",modelMap);
         return modelAndView;

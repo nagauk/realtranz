@@ -44,6 +44,28 @@ public class Enquiry extends Audiatable{
     @Column
     private Integer expectedPrice;
 
+    @Column
+    private boolean isEnquiryClosed;
+
+    @Column
+    private String closedComments;
+
+    public String getClosedComments() {
+        return closedComments;
+    }
+
+    public void setClosedComments(String closedComments) {
+        this.closedComments = closedComments;
+    }
+
+    public boolean isEnquiryClosed() {
+        return isEnquiryClosed;
+    }
+
+    public void setEnquiryClosed(boolean enquiryClosed) {
+        isEnquiryClosed = enquiryClosed;
+    }
+
     public String getDescription() {
         return description;
     }

@@ -1,15 +1,20 @@
 package com.unr.realtranz.controller;
 
 import com.unr.realtranz.entities.Plot;
+import com.unr.realtranz.entities.Users;
 import com.unr.realtranz.entities.Venture;
 import com.unr.realtranz.service.PlotService;
 import com.unr.realtranz.service.VentureService;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +66,12 @@ public class PlotController {
     }
     @RequestMapping(value="/plot",method = RequestMethod.POST)
     public RedirectView updatePlots(@ModelAttribute Plot model){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Plot plot = plotService.getPlotId(model.getId());
+        Users users = plot.getVenture().getOwner();
+        if(!users.getUsername().equalsIgnoreCase(username)){
+            throw new InvalidDataAccessResourceUsageException("Logged in user don't have access to update this plot:::"+model.getId());
+        }
         plot.setOwner(model.getOwner());
         plot.setPltStatus(model.getPltStatus());
         plotService.updatePlot(plot);
